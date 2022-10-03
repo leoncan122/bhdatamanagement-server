@@ -50,7 +50,7 @@ const clientIdSecretEncoded = buffer.from(`${DBXCLIENT_ID}:${CLIENT_SECRET}`).to
       .then(res=>{
         mainFolder=res.mainFolderUrl
         folderPath=res.folderPath
-        console.log(mainFolder)
+        console.log("mainFolder",mainFolder)
         })
         .then(response => {  return createImagesFolder(tokenFromRefresh,programName,eventName,eventDate) })
         .then(res=>{ imagesFolderUrl=res.imagesFolderUrl })
@@ -75,7 +75,7 @@ const createQrCode = async (id)=>{
     scale:15
   }
   
-  const createCode= await QRCode.toDataURL(`http://www.bh.platformable.com/events/${id}/participant_survey`, opts,function (err, url) {
+  const createCode= await QRCode.toDataURL(`https://bh.platformable.com/events/${id}/participant-survey/survey`, opts,function (err, url) {
 
      return generatedCode=url
   })
@@ -124,10 +124,10 @@ module.exports= {
         let { id } = await req.params;
 
         const query = {
-
-          text:`select events.*,users."name" as username ,users.lastname as userlastname from events 
+          text:`select * from events where events.id=$1`,
+          /* text:`select events.*,users."name" as username ,users.lastname as userlastname from events 
           join users on events.userid = users.userid 
-          where events.id=$1`,
+          where events.id=$1`, */
           values: [id],
         };
         try {
@@ -150,7 +150,9 @@ module.exports= {
             onlineEventTypeID,
             onlineEventTypeName,
             eventDescription,
-            additionalMaterials
+            additionalMaterials,
+            createdByName,
+            createdByLastname
         } = req.body;
         console.log("req.body",req.body)
 
@@ -167,7 +169,10 @@ module.exports= {
           inPersonEventTypeID,
           inPersonEventTypeName,
           onlineEventTypeID,
-          onlineEventTypeName,eventDescription,additionalMaterials) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25) RETURNING *`;
+          onlineEventTypeName,eventDescription,additionalMaterials,
+          createdByName,
+            createdByLastname
+          ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27) RETURNING *`;
       const values = [
       userID,eventDateCreated,programID,programName,eventName,
       eventDate,eventStartTime,eventFinishTime ,eventLocationTypeID,eventLocationTypeName,
@@ -175,7 +180,8 @@ module.exports= {
       inPersonEventTypeID,
       inPersonEventTypeName,
       onlineEventTypeID,
-      onlineEventTypeName,eventDescription,additionalMaterials];
+      onlineEventTypeName,eventDescription,additionalMaterials,createdByName,
+      createdByLastname];
       
           if(mainFolder!=="" || mainFolder!==null || mainFolder !==undefined){
             const allData = await db.query(text,values);
@@ -290,7 +296,6 @@ module.exports= {
         }
       },
       createeventtest:async(req,res)=>{
-
         let code;
         const f1= async ()=>{
           console.log("1")
