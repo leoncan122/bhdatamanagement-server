@@ -2098,7 +2098,11 @@ try {
             partnerOrganization1,
             additionalZipCodes,
             totalEventAttendees,
-            staffPresentNames
+            staffPresentNames,
+    demographicsKnown,
+    airsFormGender,
+    airsFormAge,
+    airsFormRaceEthnicity,
       } = req.body
 
       try {
@@ -2505,7 +2509,11 @@ try {
     partnerOrganization1=$399,
     additionalZipCodes=$400,
     totalEventAttendees=$401,
-    staffPresentNames=$402
+    staffPresentNames=$402,
+    demographicsKnown=$403,
+    airsFormGender=$404,
+    airsFormAge=$405,
+    airsFormRaceEthnicity=$406
     where eventID=$1
           `,
           values:[
@@ -2911,7 +2919,11 @@ try {
     partnerOrganization1,
     additionalZipCodes,
     totalEventAttendees,
-    staffPresentNames
+    staffPresentNames,
+    demographicsKnown,
+    airsFormGender,
+    airsFormAge,
+    airsFormRaceEthnicity
           ]
         }
           db
