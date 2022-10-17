@@ -464,7 +464,11 @@ module.exports={
             partnerOrganization1,
             additionalZipCodes,
             totalEventAttendees,
-            staffPresentNames
+            staffPresentNames,
+            demographicsKnown,
+            airsFormGender,
+            airsFormAge,
+            airsFormRaceEthnicity
         }= req.body
 
         console.log("req.body",req.body)
@@ -873,7 +877,11 @@ try {
             partnerOrganization1,
             additionalZipCodes,
             totalEventAttendees,
-            staffPresentNames
+            staffPresentNames,
+            demographicsKnown,
+            airsFormGender,
+            airsFormAge,
+            airsFormRaceEthnicity
             ) VALUES (
               $1,
               $2,
@@ -1276,7 +1284,7 @@ try {
               $399,
               $400,
               $401,
-              $402
+              $402,$403,$404,$405,$406
             ) RETURNING *`;
             const values = [
                 eventID,
@@ -1680,7 +1688,11 @@ try {
             partnerOrganization1,
             additionalZipCodes,
             totalEventAttendees,
-            staffPresentNames
+            staffPresentNames,
+            demographicsKnown,
+            airsFormGender,
+            airsFormAge,
+            airsFormRaceEthnicity
             ]
 
             const allData = await db.query(text,values);
@@ -2099,10 +2111,10 @@ try {
             additionalZipCodes,
             totalEventAttendees,
             staffPresentNames,
-    demographicsKnown,
-    airsFormGender,
-    airsFormAge,
-    airsFormRaceEthnicity,
+            demographicsKnown,
+            airsFormGender,
+            airsFormAge,
+            airsFormRaceEthnicity
       } = req.body
 
       try {
@@ -2921,9 +2933,9 @@ try {
     totalEventAttendees,
     staffPresentNames,
     demographicsKnown,
-    airsFormGender,
-    airsFormAge,
-    airsFormRaceEthnicity
+            airsFormGender,
+            airsFormAge,
+            airsFormRaceEthnicity
           ]
         }
           db
