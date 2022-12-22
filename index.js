@@ -76,7 +76,8 @@ app.use('/participant_event_outputs', participantEventRoute)
 const accessToken = require('./routes/dropboxAccessToken')
 app.use('/access_token',accessToken)
 
-
+const surveyRoute = require('./routes/survey')
+app.use('/survey', surveyRoute)
 
 //ROUTE TO OBTAIN  THE ENDPOINT oauth2/authorize WITH token_access_type= "offline" (IN ORDER TO GET THE REEFRESH TOKEN)
 app.get('/', (req, res) => {

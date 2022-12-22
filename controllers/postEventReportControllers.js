@@ -62,6 +62,7 @@ module.exports={
       try {
           const allData = await db.query(text,values);
           const response = allData.rows;
+          console.log(response)
           res.send(response);
         } catch (e) {
           res.send("an error ocurred");
