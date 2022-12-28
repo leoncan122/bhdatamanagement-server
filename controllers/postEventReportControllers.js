@@ -23,7 +23,6 @@ module.exports={
         events.eventlocationtypeid,
         events.onlineeventtypeid,
         events.onlineeventtypename,
-        events.borough,
         users.name,
         users.lastname,users.userid
         from events_output 
@@ -63,6 +62,7 @@ module.exports={
       try {
           const allData = await db.query(text,values);
           const response = allData.rows;
+          console.log(response)
           res.send(response);
         } catch (e) {
           res.send("an error ocurred");

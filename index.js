@@ -78,24 +78,8 @@ app.use('/participant_event_outputs', participantEventRoute)
 const accessToken = require('./routes/dropboxAccessToken')
 app.use('/access_token',accessToken)
 
-const dbBackup = require('./routes/dbBackup')
-app.use('/backup',dbBackup)
-
-const fbos = require('./routes/fbos')
-app.use('/fbos',fbos)
-
-//AUTOBACKUP
-
-var task = cron.schedule('50 9 * * *', () =>  {
-  console.log('running a task every day at 9am europe');
-  autoBackup.createBackupFromClientSide()
-}, {
-  scheduled: false,
-  timezone:'Europe/Madrid'
-});
-
-task.start();
-
+const surveyRoute = require('./routes/survey')
+app.use('/survey', surveyRoute)
 
 //ROUTE TO OBTAIN  THE ENDPOINT oauth2/authorize WITH token_access_type= "offline" (IN ORDER TO GET THE REEFRESH TOKEN)
 // app.get('/', (req, res) => {
