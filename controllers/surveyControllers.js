@@ -38,9 +38,36 @@ module.exports= {
         res.status(400).send("an error ocurred");
       }
 },
+addSurveyResult: async(req, res) => {
+  console.log(req.body)
+  const {surveyId, content, createdAt, createdBy} = req.body
+  const createQuery = "INSERT INTO survey_result (survey_id, content, createdAt, createdBy) VALUES ($1, $2, $3, $4) RETURNING *"
+  try {
+      const values = [surveyId, content, new Date(createdAt), createdBy]
+      console.log("query values", values)
+      const response = await db.query(createQuery, values)
+      console.log("response",response)
+      res.send(response);
+    } catch (e) {
+      res.status(400).send("an error ocurred");
+    }
+},
+
+//Hace el update pero da siempre error 500
+updateSurvey: async (req, res) => {
+  // const {id} = req.params
+  const {id, content, changedBy, changedAt}  = req.body 
+  try {
+      const response = await db.query("UPDATE survey_schema set content=$2, changedby=$3, changedat=$4 WHERE id=$1 RETURNING *", [id, content, changedBy, new Date(changedAt)]);
+      console.log(response)
+      res.status(200).send({message: `Survey ${response[0].name} with id: ${response[0].id} was updated`});
+      
+    } catch (e) {
+      res.status(500).send("an error ocurred");
+    }
+},
 deleteSurvey: async (req, res) => {
   const {id} = req.params
-  console.log("deleting", id)
   try {
       const response = await db.query("DELETE FROM survey_schema WHERE id = $1;", [id]);
       console.log(response)

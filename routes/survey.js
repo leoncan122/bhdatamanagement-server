@@ -5,6 +5,8 @@ const controller= require("../controllers/surveyControllers")
 router.get("/",controller.getSurveys)
 router.get("/:id",controller.getSurveyById)
 router.post("/",controller.createSurvey)
+router.post("/survey_result", controller.addSurveyResult)
+router.put("/", controller.updateSurvey)
 router.delete("/:id",controller.deleteSurvey)
 
 
