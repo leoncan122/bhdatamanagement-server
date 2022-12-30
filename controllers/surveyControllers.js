@@ -52,6 +52,27 @@ addSurveyResult: async(req, res) => {
       res.status(400).send("an error ocurred");
     }
 },
+getSurveyResultById: async (req, res) => {
+  const {id} = req.params
+  try {
+      const allData = await db.query("select * from survey_result where id = $1", [id]);
+      const response = allData.rows;
+      res.send(response);
+    } catch (e) {
+      res.send("an error ocurred");
+    }
+},
+getResultBySurveyId: async (req, res) => {
+  const {id} = req.params
+  try {
+      const allData = await db.query("select sr.content as result, sr.createdat as resultdate, sr.createdby as resultby, * from survey_result sr left join survey_schema ss on sr.survey_id = ss.id where ss.id = $1", [id]);
+      const response = allData.rows;
+      console.log(response)
+      res.send(response);
+    } catch (e) {
+      res.send("an error ocurred");
+    }
+},
 
 //Hace el update pero da siempre error 500
 updateSurvey: async (req, res) => {
@@ -78,6 +99,35 @@ deleteSurvey: async (req, res) => {
       }
     } catch (e) {
       return res.status(500).send("an error ocurred");
+    }
+},
+
+createSecondarySurveySchema: async (req,res)=>{
+  console.log(req.body)
+  const {survey_id, content, createdAt, createdBy} = req.body
+  const createQuery = "INSERT INTO related_survey_schema (survey_id,content, createdAt, createdBy) VALUES ($1, $2, $3, $4) RETURNING *;"
+  try {
+      // const allData = await db.query("select * from survey_schema where  = $1",[id]);
+      // const counts = allData.rows.count;
+      // if (counts < 0) {throw new Error("Schema does not exists")}
+      const values = [survey_id, content, new Date(createdAt), createdBy]
+      console.log(values)
+      const response = await db.query(createQuery, values)
+      console.log(response)
+      res.send(response);
+    } catch (e) {
+      res.status(400).send("an error ocurred");
+    }
+},
+getRelatedSurveysBySurveyId: async (req, res) => {
+  const {id} = req.params
+  try {
+      const allData = await db.query("select * from related_survey_schema rss where rss.survey_id = $1", [id]);
+      const response = allData.rows;
+      console.log(response)
+      res.send(response);
+    } catch (e) {
+      res.send("an error ocurred");
     }
 },
 }
