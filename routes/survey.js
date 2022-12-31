@@ -12,7 +12,8 @@ router.put("/", controller.updateSurvey)
 router.delete("/:id",controller.deleteSurvey)
 
 router.post("/related", controller.createSecondarySurveySchema)
-router.get("/related/:id", controller.getRelatedSurveysBySurveyId)
+router.get("/related/:id", controller.getRelatedSurveyById)
+router.get("/all_related/:id", controller.getAllRelatedSurveysBySurveyId)
 
 
 

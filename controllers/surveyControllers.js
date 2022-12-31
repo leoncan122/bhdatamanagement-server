@@ -105,7 +105,7 @@ deleteSurvey: async (req, res) => {
 createSecondarySurveySchema: async (req,res)=>{
   console.log(req.body)
   const {survey_id, content, createdAt, createdBy} = req.body
-  const createQuery = "INSERT INTO related_survey_schema (survey_id,content, createdAt, createdBy) VALUES ($1, $2, $3, $4) RETURNING *;"
+  const createQuery = "INSERT INTO related_survey_schema ( survey_id,content, createdAt, createdBy) VALUES ($1, $2, $3, $4) RETURNING *;"
   try {
       // const allData = await db.query("select * from survey_schema where  = $1",[id]);
       // const counts = allData.rows.count;
@@ -119,10 +119,22 @@ createSecondarySurveySchema: async (req,res)=>{
       res.status(400).send("an error ocurred");
     }
 },
-getRelatedSurveysBySurveyId: async (req, res) => {
+//Endpoint to update: secondary survey schema need to update relation with survey result when post  
+getAllRelatedSurveysBySurveyId: async (req, res) => {
   const {id} = req.params
   try {
       const allData = await db.query("select * from related_survey_schema rss where rss.survey_id = $1", [id]);
+      const response = allData.rows;
+      console.log(response)
+      res.send(response);
+    } catch (e) {
+      res.send("an error ocurred");
+    }
+},
+getRelatedSurveyById: async (req, res) => {
+  const {id} = req.params
+  try {
+      const allData = await db.query("select * from related_survey_schema rss where rss.id = $1", [id]);
       const response = allData.rows;
       console.log(response)
       res.send(response);
